@@ -82,6 +82,8 @@ labs/
     lab-2.4-progressive-disclosure/  + scripts/ + a decoy reference (JIT proof)
 sample-project/                  Canonical copy of the coupon spec, API doc, template
 docs/
+  instructor-notes.md                        Verified test results, per-lab talking
+                                             points, cost/timing, run-sheet reminders
   agent-skills-progressive-disclosure.html   Reference guide (Thai) for Module 2 —
                                              open it in a browser
 ```
