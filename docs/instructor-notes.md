@@ -18,6 +18,7 @@ class — skill auto-triggering and AGENTS.md pickup can change between versions
 | 2.2 | ~20s | ~9 | Fastest — skill removes the thinking-about-format work |
 | 2.3 | ~30s | ~7 | |
 | 2.4 | ~45s | ~15 | Script run + file edit |
+| 2.5 | ~2m10s | ~29 | Heaviest run — reads 5 reference files, writes ~290-line suite |
 
 Rule of thumb: **~90–100 credits per participant** for the full path. A
 20-person class ≈ 160 runs — confirm attendees' Copilot plans have headroom,
@@ -92,6 +93,25 @@ and expect the room to take 2–3× the solo wall time per lab.
   running it, and after the script created the file it briefly tried to
   re-create it (blocked: "Path already exists") before switching to editing.
   It self-recovered — a nice live example of agents recovering from tool errors.
+
+### 2.5 Install a real skill (bonus)
+- Verified end-to-end: Drive-zip install → auto-activation → progressive
+  disclosure at scale (read only 5 of 14 references — never `stt.md`, since
+  the coupon spec has no workflow states) → 288-line suite with per-condition
+  BVA/EP, 13 business scenarios, and R8 flagged by gap analysis with three
+  interpretations. Hold this output next to the Lab 1.4 result for the
+  "template vs technique" comparison in Discussion 4.
+- Needs network access to GitHub or Google Drive — check the venue's network
+  beforehand; the Drive zip via `curl` is the friendlier path on locked-down
+  machines (no git required).
+- The skill's `AskUserQuestion` interactions (combination method, save format)
+  only work in an interactive session — that's the intended classroom
+  experience. For a non-interactive smoke test, pre-answer in the prompt
+  ("use business-driven scenarios, save as Markdown, no need to ask me").
+- Global-install part writes to `~/.copilot/skills/` on attendee machines —
+  point out the cleanup command at the end of the lab.
+- Discussion 2 (review-before-install) is the security beat of the day: a
+  skill is instructions + possibly scripts your agent will run. Don't skip it.
 
 ## Run-sheet reminders
 

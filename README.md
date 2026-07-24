@@ -80,6 +80,7 @@ labs/
     lab-2.2-a-little-instruction/    + .github/skills/bug-report/SKILL.md
     lab-2.3-reference-files/         + references/ (template, severity guide)
     lab-2.4-progressive-disclosure/  + scripts/ + a decoy reference (JIT proof)
+    lab-2.5-install-a-real-skill/    bonus: install test-engineer (project & global level)
 sample-project/                  Canonical copy of the coupon spec, API doc, template
 docs/
   instructor-notes.md                        Verified test results, per-lab talking

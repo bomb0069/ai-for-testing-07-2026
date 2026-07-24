@@ -18,6 +18,7 @@ it gets loaded**.
 | [2.2 A little instruction](lab-2.2-a-little-instruction/) | a minimal `SKILL.md` | name + description + a few rules already changes everything |
 | [2.3 Reference files](lab-2.3-reference-files/) | `SKILL.md` + `references/` | Deep knowledge lives in files the skill points to |
 | [2.4 Progressive disclosure](lab-2.4-progressive-disclosure/) | full skill: metadata → instructions → resources | Load the right knowledge at the right time, pay tokens only when needed |
+| [2.5 Install a real skill](lab-2.5-install-a-real-skill/) *(bonus)* | someone else's — installed at project & global level | Skills are distributable; read before you install |
 
 ## How Copilot CLI finds skills
 
@@ -49,3 +50,5 @@ Copilot picks a skill automatically when your request matches its
 
 ~15 min for labs 2.1–2.2, ~20 min for 2.3–2.4, discussions in between.
 Lab 2.4 ends with a build-your-own exercise — protect time for it.
+Lab 2.5 is a bonus (~20 min): run it if the room is fast, otherwise assign it
+as take-home — it needs network access to GitHub or Google Drive.
