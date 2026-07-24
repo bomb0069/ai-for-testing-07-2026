@@ -1,6 +1,7 @@
 # Lab 1.1 · Just a Prompt
 
-**Time:** ~15 min · **Folder contents:** only this README — that's the point.
+**Time:** ~15 min · **Folder contents:** this README + an intentionally empty
+`workspace/` folder — that's the point.
 
 ## Scenario
 
@@ -9,10 +10,12 @@ write test cases, so you just… ask it.
 
 ## Steps
 
-1. Start a fresh Copilot CLI session **in this folder**:
+1. Start a fresh Copilot CLI session **inside `workspace/`** (not next to this
+   README — otherwise the agent reads the lab instructions and spoils its own
+   lesson; we tested, it really does 😄):
 
    ```bash
-   cd labs/01-context-engineering/lab-1.1-just-a-prompt
+   cd labs/01-context-engineering/lab-1.1-just-a-prompt/workspace
    copilot
    ```
 

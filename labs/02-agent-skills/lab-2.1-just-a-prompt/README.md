@@ -1,22 +1,24 @@
 # Lab 2.1 · Just a Prompt (no skill)
 
-**Time:** ~15 min · **Folder contents:** this README + `bug-notes.md`
+**Time:** ~15 min · **Folder contents:** this README + `workspace/bug-notes.md`
 
 ## Scenario
 
 You found a real bug while testing the coupon feature (a boundary bug —
-nice catch!). Your raw notes are in [`bug-notes.md`](bug-notes.md). You want the
-AI to turn them into a proper bug report.
+nice catch!). Your raw notes are in
+[`workspace/bug-notes.md`](workspace/bug-notes.md). You want the AI to turn
+them into a proper bug report.
 
 There is no skill installed here. You'll do it the way most people start:
 just ask.
 
 ## Steps
 
-1. Start a fresh Copilot CLI session in this folder:
+1. Start a fresh Copilot CLI session **inside `workspace/`** (so the agent sees
+   only your notes, not these lab instructions):
 
    ```bash
-   cd labs/02-agent-skills/lab-2.1-just-a-prompt
+   cd labs/02-agent-skills/lab-2.1-just-a-prompt/workspace
    copilot
    ```
 
