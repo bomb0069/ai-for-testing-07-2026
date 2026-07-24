@@ -117,6 +117,23 @@ and expect the room to take 2–3× the solo wall time per lab.
 - Discussion 2 (review-before-install) is the security beat of the day: a
   skill is instructions + possibly scripts your agent will run. Don't skip it.
 
+## Experiment sections — all verified (2026-07-24)
+
+Every **Experiment:** step in the labs was also run for real. Results, including
+the nuances worth narrating:
+
+| Lab experiment | Result |
+|---|---|
+| 1.2 remove "Output format" | ✅ Content stayed grounded (real codes/boundaries, R8 → Open Questions) but structure collapsed into the model's own table — no Type/Priority/Requirement per case. Cleanly separates "context → correctness" from "format → usability". |
+| 1.3 rename `requirements/` → `stuff/` | ✅ with a twist: the agent **still found the spec** — because the *filename* `coupon-discount.md` still announces itself. Discovery got less direct (read the example first, fell back to `find` over everything, ~25% more credits, produced 13 cases vs 17). Teaching nuance: naming matters at every level; to fully break discovery you'd have to rename the file too. |
+| 1.4 add "titles must start with 🧪" to AGENTS.md | ✅ All 20 generated titles start with 🧪. Instant, undeniable proof AGENTS.md is loaded. |
+| 2.2 A: explicit `/bug-report` | ✅ Skill fires, same output contract. |
+| 2.2 B1: unrelated question | ✅ Skill stays silent — no activation line. |
+| 2.2 B2: misleading description ("cooking recipes") | ✅ with the best nuance of the day: the skill did **not** auto-fire from metadata — but the agent then *browsed the folder, read SKILL.md as an ordinary file, called out the mismatch* ("named bug-report but description references cooking") and followed the body anyway. Lesson: the description governs **automatic** activation; it does not hide the file from an exploring agent. |
+| 2.3 edit severity-guide | ✅ Added a tie-breaker "boundary rejection → always S1"; report flipped S2 → **S1 – Critical citing the new rule verbatim** — behavior changed without touching SKILL.md. |
+| 2.4 flip the decoy (UI bug) | ✅ Agent read `ui-bug-extras.md` **first**, announced "This is a UI bug", produced `[UI][Coupon]` title + Visual Details/cross-browser sections, rated S3 with reasoning, and refused to invent device/iOS details. |
+| 2.5 Part B global install | ✅ Skill activates from an empty folder — proof the metadata is machine-wide. Caveat: in a **non-interactive** run, reading references under `~/.copilot/skills/` was permission-denied (outside the working directory); in the classroom's interactive session Copilot asks and the learner approves. |
+
 ## Run-sheet reminders
 
 - Fresh `copilot` session per lab, always — clean context is part of the experiment.
