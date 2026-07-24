@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Skills & Progressive Disclosure - คู่มือฉบับสมบูรณ์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 60px 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            border: none;
+            background: var(--light);
+            color: var(--gray);
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: #e0e7ff;
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .tab-btn .icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary);
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 {
+            color: var(--dark);
+            margin: 25px 0 15px;
+            font-size: 1.4rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .card-item {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .card-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .card-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card-item h4 {
+            color: var(--dark);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .card-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: var(--gradient);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-yes { color: var(--success); font-weight: 600; }
+        .status-no { color: var(--danger); font-weight: 600; }
+        .status-partial { color: var(--warning); font-weight: 600; }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--dark);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'CODE';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 0.7rem;
+            color: var(--gray);
+            font-family: 'Prompt', sans-serif;
+        }
+
+        .code-block .comment { color: #64748b; }
+        .code-block .keyword { color: #c084fc; }
+        .code-block .string { color: #86efac; }
+        .code-block .number { color: #fca5a5; }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 20px 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 25px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 12px;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Accordion */
+        .accordion {
+            margin: 20px 0;
+        }
+
+        .accordion-item {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: #f8fafc;
+        }
+
+        .accordion-header.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: var(--light);
+        }
+
+        .accordion-content.open {
+            max-height: 1000px;
+            padding: 20px;
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Token Calculator */
+        .calculator {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .calculator h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .calc-input {
+            margin-bottom: 20px;
+        }
+
+        .calc-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .calc-input input, .calc-input select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #475569;
+            border-radius: 8px;
+            background: #1e293b;
+            color: white;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+        }
+
+        .calc-input input:focus, .calc-input select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .calc-result {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .calc-result .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Folder Structure */
+        .folder-tree {
+            font-family: 'Courier New', monospace;
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .folder-tree .folder { color: var(--primary); font-weight: 600; }
+        .folder-tree .file { color: var(--gray); }
+        .folder-tree .file-used { color: var(--success); font-weight: 600; }
+        .folder-tree .indent { margin-left: 20px; }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .badge-primary { background: #e0e7ff; color: var(--primary); }
+        .badge-success { background: #d1fae5; color: var(--success); }
+        .badge-warning { background: #fef3c7; color: var(--warning); }
+        .badge-danger { background: #fee2e2; color: var(--danger); }
+
+        /* Comparison Visual */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .comparison-card.best::before {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .comparison-card .agent-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .comparison-card .token-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+
+        .comparison-card .description {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero p { font-size: 1rem; }
+            .tab-nav { flex-direction: column; }
+            .tab-btn { min-width: 100%; }
+            .card-grid { grid-template-columns: 1fr; }
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Print Styles */
+        @media print {
+            .tab-nav, .hero { display: none; }
+            .tab-content { display: block !important; }
+            .card { break-inside: avoid; }
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--gradient);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            z-index: 1000;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-badge">📚 คู่มือฉบับสมบูรณ์ 2026</div>
+            <h1>AI Agent Skills & Progressive Disclosure</h1>
+            <p>เข้าใจกลไกการโหลดทรัพยากรแบบ Just-In-Time ของ AI Agent แต่ละแพลตฟอร์ม พร้อมเปรียบเทียบและแนวทางปฏิบัติที่ดีที่สุด</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('tab1')">
+                <span class="icon">📖</span>พื้นฐาน
+            </button>
+            <button class="tab-btn" onclick="showTab('tab2')">
+                <span class="icon">⚙️</span>กลไกหลัก
+            </button>
+            <button class="tab-btn" onclick="showTab('tab3')">
+                <span class="icon">📊</span>เปรียบเทียบ
+            </button>
+            <button class="tab-btn" onclick="showTab('tab4')">
+                <span class="icon">🛠️</span>ปฏิบัติจริง
+            </button>
+            <button class="tab-btn" onclick="showTab('tab5')">
+                <span class="icon">🚀</span>เชิงลึก
+            </button>
+        </div>
+
+        <!-- Tab 1: พื้นฐาน -->
+        <div id="tab1" class="tab-content active">
+            <div class="card">
+                <h2>🎯 Agent Skills คืออะไร?</h2>
+                <p><strong>Agent Skills</strong> คือระบบที่ช่วยให้ AI Agent สามารถเรียนรู้และใช้งาน "ทักษะ" เฉพาะด้านได้ผ่านไฟล์ที่กำหนดไว้ล่วงหน้า ทำให้เอเจนต์สามารถทำงานที่ซับซ้อนได้โดยไม่ต้องโหลดข้อมูลทั้งหมดลงใน context พร้อมกัน</p>
+                
+                <div class="card-grid" style="margin-top: 30px;">
+                    <div class="card-item">
+                        <div class="icon">📁</div>
+                        <h4>SKILL.md</h4>
+                        <p>ไฟล์มาตรฐานที่เก็บคำอธิบายและคำแนะนำสำหรับแต่ละทักษะ ใช้รูปแบบ Markdown พร้อม YAML frontmatter</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="icon">🎚️</div>
+                        <h4>Progressive Disclosure</h4>
+                        <p>หลักการเปิดเผยข้อมูลแบบเป็นขั้นตอน โหลดเฉพาะสิ่งที่จำเป็นเมื่อจำเป็นเท่านั้น</p>
+                    </div>
+                    <div class="card-item">
+                        <div class="icon">⚡</div>
+                        <h4>Just-In-Time Loading</h4>
+                        <p>โหลดทรัพยากรเฉพาะตอนที่เอเจนต์ต้องการใช้จริงๆ ไม่ใช่โหลดล่วงหน้าทั้งหมด</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔄 แบบเดิม vs Progressive Disclosure</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ลักษณะ</th>
+                                <th>แบบเดิม (Eager Loading)</th>
+                                <th>Progressive Disclosure</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>การโหลดข้อมูล</strong></td>
+                                <td>โหลดทั้งหมดตั้งแต่เริ่ม</td>
+                                <td>โหลดเฉพาะเมื่อจำเป็น</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Context Usage</strong></td>
+                                <td>บวมมาก (10,000+ tokens)</td>
+                                <td>ประหยัด (1,000-3,000 tokens)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ความเร็วเริ่มต้น</strong></td>
+                                <td>ช้า (ต้องประมวลผลมาก)</td>
+                                <td>เร็ว (โหลดแค่ดัชนี)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ความแม่นยำ</strong></td>
+                                <td>โมเดลสับสนง่าย</td>
+                                <td>โมเดลโฟกัสได้ดี</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ต้นทุน</strong></td>
+                                <td>สูง (ใช้ tokens เปลือง)</td>
+                                <td>ต่ำ (ใช้เท่าที่จำเป็น)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💡 ทำไมต้อง Progressive Disclosure?</h2>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>ลด Context Bloat</span>
+                        <span>70-90%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%;">85%</div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>ประหยัด Token Cost</span>
+                        <span>30-70%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%;">65%</div>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>เพิ่มความแม่นยำ</span>
+                        <span>40-60%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 55%;">55%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: กลไกหลัก -->
+        <div id="tab2" class="tab-content">
+            <div class="card">
+                <h2>🎚️ 3 ระดับของ Progressive Disclosure</h2>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>🟢 ระดับ 1: Metadata (โหลดเสมอ)</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>สิ่งที่โหลด:</strong> ชื่อและคำอธิบายของทักษะเท่านั้น</p>
+                            <div class="code-block">
+<span class="comment"># ไฟล์: SKILL.md</span>
+<span class="keyword">---</span>
+<span class="string">name:</span> <span class="string">"postgres-admin"</span>
+<span class="string">description:</span> <span class="string">"จัดการ Cloud SQL PostgreSQL: สร้าง instance, backup, monitoring"</span>
+<span class="string">trigger_keywords:</span> [<span class="string">"database"</span>, <span class="string">"postgres"</span>, <span class="string">"cloud sql"</span>]
+<span class="keyword">---</span>
+                            </div>
+                            <p><strong>Token Usage:</strong> ~50-100 tokens ต่อทักษะ</p>
+                            <p><strong>วัตถุประสงค์:</strong> ให้เอเจนต์ "รู้ว่ามีความสามารถนี้" และตัดสินใจได้ว่าควรใช้เมื่อไหร่</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>🟡 ระดับ 2: Instructions (โหลดเมื่อเรียกใช้)</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>สิ่งที่โหลด:</strong> เนื้อหาหลักของ SKILL.md เมื่อเอเจนต์ตัดสินใจใช้ทักษะนั้น</p>
+                            <div class="code-block">
+<span class="comment">## ขั้นตอนการสร้าง Cloud SQL Instance</span>
+<span class="number">1.</span> ตรวจสอบโควต้าโปรเจกต์ด้วย <span class="string">`gcloud compute regions list`</span>
+<span class="number">2.</span> ใช้คำสั่ง <span class="string">`gcloud sql instances create...`</span>
+<span class="number">3.</span> ยืนยันการตั้งค่ากับผู้ใช้ก่อนดำเนินการ
+                            </div>
+                            <p><strong>Token Usage:</strong> ~300-800 tokens</p>
+                            <p><strong>วัตถุประสงค์:</strong> ให้แนวทางปฏิบัติที่ชัดเจนสำหรับงานนั้นๆ</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>🔴 ระดับ 3: Resources (โหลดเมื่อจำเป็นลึก)</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>สิ่งที่โหลด:</strong> ไฟล์ในโฟลเดอร์ย่อยเฉพาะเมื่อเอเจนต์ร้องขอ</p>
+                            <div class="folder-tree">
+<span class="folder">skills/postgres-admin/</span>
+├── <span class="file">SKILL.md</span>              ← ระดับ 2
+├── <span class="folder">scripts/</span>
+│   ├── <span class="file">create-instance.sh</span>  ← โหลดเมื่อต้องการรัน
+│   └── <span class="file">backup-db.sh</span>
+├── <span class="folder">references/</span>
+│   ├── <span class="file">api-reference.md</span>    ← โหลดเมื่อต้องการดูรายละเอียด
+│   └── <span class="file">troubleshooting.md</span>
+└── <span class="folder">assets/</span>
+    └── <span class="file">architecture.png</span>    ← โหลดเมื่อต้องการอธิบายด้วยภาพ
+                            </div>
+                            <p><strong>Token Usage:</strong> แตกต่างตามไฟล์ (500-5,000+ tokens)</p>
+                            <p><strong>วัตถุประสงค์:</strong> ให้ข้อมูลสนับสนุนแบบ "พอดีเวลา" (Just-In-Time)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⚡ วงจรการทำงาน JIT</h2>
+                <div class="folder-tree">
+<span class="number">1️⃣</span> เริ่มต้นเซสชัน
+    └─→ โหลดแค่ชื่อ + คำอธิบายของทุก Skill (~100 tokens/ทักษะ)
+
+<span class="number">2️⃣</span> ผู้ใช้ถาม: <span class="string">"ช่วยสร้าง Cloud SQL instance ให้หน่อย"</span>
+    └─→ เอเจนต์สแกน metadata → พบว่า <span class="file-used">"postgres-admin"</span> เกี่ยวข้อง
+
+<span class="number">3️⃣</span> เอเจนต์ร้องขอ: <span class="keyword">activate_skill("postgres-admin")</span>
+    └─→ ระบบแสดงยืนยันให้ผู้ใช้กดยอมรับ (ความปลอดภัย)
+
+<span class="number">4️⃣</span> ผู้ใช้อนุญาต → โหลดระดับ 2 (Instructions)
+    └─→ เอเจนต์อ่านขั้นตอน → ตัดสินใจเรียกสคริปต์จากระดับ 3 ถ้าจำเป็น
+
+<span class="number">5️⃣</span> ทำงานเสร็จ → ผลลัพธ์กลับสู่ผู้ใช้
+    └─→ เก็บผลลัพธ์ในบริบท แต่ไม่จำเป็นต้องเก็บทั้งสคริปต์
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📄 ตัวอย่าง SKILL.md แบบสมบูรณ์</h2>
+                <div class="code-block">
+<span class="comment">---
+name: "security-audit"
+description: "ตรวจสอบความปลอดภัยของโค้ด: สแกนหา vulnerabilities, ตรวจสอบ dependencies"
+trigger_keywords: ["security", "audit", "vulnerability", "scan"]
+version: "1.0.0"
+---
+
+## 🎯 เมื่อควรใช้ทักษะนี้
+- ผู้ใช้ขอให้รีวิวโค้ดหรือ pull request
+- มีการพูดถึง "security", "best practices", หรือ "code style"
+
+## 📋 ขั้นตอนการทำงาน
+1. อ่านไฟล์ที่ระบุหรือค้นหาไฟล์ที่เปลี่ยนแปลงใน git diff
+2. ตรวจสอบตามเช็กลิสต์ใน <span class="string">`references/security-checklist.md`</span>
+3. ถ้าพบประเด็นร้ายแรง: รัน <span class="string">`scripts/scan-deep.sh`</span> เพื่อสแกนละเอียด
+4. สร้างรายงานโดยใช้เทมเพลตจาก <span class="string">`assets/report-template.md`</span>
+
+##  ทรัพยากรและวิธีใช้
+- <span class="string">`references/security-checklist.md`</span> → <strong>อ่าน</strong> เมื่อต้องการเช็กลิสต์ความปลอดภัย
+- <span class="string">`scripts/scan-deep.sh`</span> → <strong>รัน</strong> ด้วยคำสั่ง <span class="string">`bash scripts/scan-deep.sh`</span>
+- <span class="string">`assets/report-template.md`</span> → <strong>ใช้เป็นเทมเพลต</strong> เมื่อสร้างรายงาน
+
+## ⚠️ ข้อจำกัด
+- ไม่รองรับภาษา Haskell หรือ Rust (เวอร์ชันปัจจุบัน)
+- ต้องมีสิทธิ์อ่านไฟล์ในโฟลเดอร์โปรเจกต์
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: เปรียบเทียบ -->
+        <div id="tab3" class="tab-content">
+            <div class="card">
+                <h2>📊 เปรียบเทียบ 5 Agent หลัก</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Agent</th>
+                                <th>Level 1</th>
+                                <th>Level 2</th>
+                                <th>Level 3</th>
+                                <th>Semantic Folders</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Claude Code</strong></td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-yes">✅ รองรับ + Auto</td>
+                                <td class="status-yes">✅ scripts/, references/</td>
+                            </tr>
+                            <tr>
+                                <td><strong>GitHub Copilot</strong></td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-partial">⚠️ ต้องอ้างอิงชัด</td>
+                                <td class="status-partial">⚠️ ไม่ auto-interpret</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cursor</strong></td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-yes">✅ ผ่าน AGENTS.md</td>
+                                <td class="status-partial">⚠️ ขึ้นกับโครงสร้าง</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gemini CLI</strong></td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-yes">✅ รองรับ</td>
+                                <td class="status-partial">⚠️ โหลดได้ไม่แยกความหมาย</td>
+                                <td class="status-no">❌ ยังไม่รองรับ</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Qwen-Agent</strong></td>
+                                <td class="status-partial">⚠️ ใช้วิธีอื่น</td>
+                                <td class="status-partial">⚠️ ใช้ RAG</td>
+                                <td class="status-no">❌ ไม่ใช้มาตรฐาน</td>
+                                <td class="status-no">❌ ใช้ framework เฉพาะ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 กรณีศึกษา: Reference 10 ไฟล์ ใช้ 1 ไฟล์</h2>
+                <p><strong>สถานการณ์:</strong> มีไฟล์ reference 10 ไฟล์ (ไฟล์ละ 2,000 tokens) แต่ใช้จริงแค่ 1 ไฟล์</p>
+                
+                <div class="folder-tree" style="margin: 20px 0;">
+<span class="folder">skills/database-migration/</span>
+├── <span class="file">SKILL.md</span>
+└── <span class="folder">references/</span>
+    ├── <span class="file">mysql-guide.md</span>       (2,000 tokens)
+    ├── <span class="file-used">postgres-guide.md</span>    (2,000 tokens) ← ✅ ใช้
+    ├── <span class="file">oracle-guide.md</span>      (2,000 tokens)
+    ├── <span class="file">...</span>                  (อีก 7 ไฟล์ = 14,000 tokens)
+    └── <span class="file">sql-server-guide.md</span>  (2,000 tokens)
+
+<span class="keyword">รวมทั้งหมด:</span> 20,000 tokens | <span class="keyword">ที่ใช้จริง:</span> 2,000 tokens
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card best">
+                        <div class="agent-name">🟣 Claude Code</div>
+                        <div class="token-count">2,600</div>
+                        <div class="description">โหลดเฉพาะไฟล์ที่ต้องการ รู้ความหมายโฟลเดอร์</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-success">ประหยัดที่สุด</span>
+                        </div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="agent-name">🔷 GitHub Copilot</div>
+                        <div class="token-count">2,600</div>
+                        <div class="description">ดีถ้าเขียน SKILL.md ชัดเจน</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-primary">ดี</span>
+                        </div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="agent-name">🟢 Cursor</div>
+                        <div class="token-count">2,600</div>
+                        <div class="description">ใช้บริบท IDE ช่วยตัดสินใจ</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-primary">ดี</span>
+                        </div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="agent-name">🔵 Gemini CLI</div>
+                        <div class="token-count">2,650 - 20,600</div>
+                        <div class="description">เสี่ยงโหลดหมดถ้าไม่ระบุชัด</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-warning">มีความเสี่ยง</span>
+                        </div>
+                    </div>
+                    <div class="comparison-card best">
+                        <div class="agent-name">🟠 Qwen-Agent</div>
+                        <div class="token-count">600</div>
+                        <div class="description">ใช้ RAG ค้นหาเฉพาะส่วนที่เกี่ยวข้อง</div>
+                        <div style="margin-top: 15px;">
+                            <span class="badge badge-success">ประหยัดสุด</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💰 Token Cost Calculator</h2>
+                <div class="calculator">
+                    <h3>🧮 คำนวณต้นทุน Token</h3>
+                    <div class="calc-input">
+                        <label>จำนวน Skills ที่โหลด:</label>
+                        <input type="number" id="skillCount" value="5" min="1" max="100">
+                    </div>
+                    <div class="calc-input">
+                        <label>จำนวน Reference Files ที่ใช้:</label>
+                        <input type="number" id="refCount" value="1" min="1" max="50">
+                    </div>
+                    <div class="calc-input">
+                        <label>ขนาดไฟล์เฉลี่ย (tokens):</label>
+                        <input type="number" id="avgTokens" value="2000" min="100" max="10000">
+                    </div>
+                    <div class="calc-input">
+                        <label>เลือก Agent:</label>
+                        <select id="agentSelect">
+                            <option value="claude">Claude Code</option>
+                            <option value="copilot">GitHub Copilot</option>
+                            <option value="cursor">Cursor</option>
+                            <option value="gemini">Gemini CLI</option>
+                            <option value="qwen">Qwen-Agent</option>
+                        </select>
+                    </div>
+                    <button onclick="calculateTokens()" style="width: 100%; padding: 15px; background: var(--gradient); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; font-family: 'Prompt', sans-serif;">คำนวณ</button>
+                    <div class="calc-result">
+                        <div style="margin-bottom: 10px;">ประมาณการ Tokens ที่ใช้:</div>
+                        <div class="value" id="tokenResult">0</div>
+                        <div style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                            ราคาโดยประมาณ: <span id="costResult">$0.00</span> (ที่ $0.0001/1K tokens)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: ปฏิบัติจริง -->
+        <div id="tab4" class="tab-content">
+            <div class="card">
+                <h2>🛠️ วิธีเขียน SKILL.md ที่เข้ากันได้ทุกแพลตฟอร์ม</h2>
+                <div class="code-block">
+<span class="comment">---
+name: cross-platform-security
+description: "สแกนความปลอดภัย: อ่านเช็กลิสต์ + รันสคริปต์ + สร้างรายงาน"
+trigger_keywords: ["security", "audit", "scan", "vulnerability"]
+version: "1.0.0"
+---
+
+## 📋 ขั้นตอน (เขียนให้เอเจนต์ "ตัดสินใจถูก" ว่าควรโหลดอะไร)
+
+### 1. อ่านเช็กลิสต์
+→ ใช้คำสั่ง: <span class="string">`อ่านไฟล์: references/security-checklist.md`</span>
+→ (เขียนชัดว่า <span class="string">"อ่าน"</span> เพื่อให้เอเจนต์รู้ว่าควรโหลดไฟล์นี้เข้าบริบท)
+
+### 2. รันสคริปต์สแกนละเอียด
+→ ใช้คำสั่ง: <span class="string">`รัน: bash scripts/scan-deep.sh --target "{FILE}"`</span>
+→ (เขียนชัดว่า <span class="string">"รัน"</span> + ให้คำสั่งที่รันได้ทันที → เอเจนต์ไม่ต้องโหลดโค้ดสคริปต์)
+
+### 3. สร้างรายงาน
+→ ใช้คำสั่ง: <span class="string">`อ่านเทมเพลต: assets/report-template.md`</span>
+→ (เขียนชัดว่า <span class="string">"ใช้เป็นเทมเพลต"</span> → เอเจนต์รู้ว่าควรโหลดเพื่ออ้างอิงโครงสร้าง)
+
+## 🗺️ แผนที่ทรัพยากร (สำคัญมากสำหรับ Gemini CLI)
+| คำค้นหา | ไฟล์ที่ควรโหลด |
+|---------|---------------|
+| PostgreSQL | references/postgres-guide.md |
+| MySQL | references/mysql-guide.md |
+| Oracle | references/oracle-guide.md |
+
+> 💡 <strong>กฎทอง:</strong> เขียน <span class="string">"กริยา"</span> นำหน้าการอ้างอิงไฟล์เสมอ
+> - <span class="string">"อ่านไฟล์: ..."</span> → โหลดเข้าบริบท
+> - <span class="string">"รัน: ..."</span> → รันแล้วได้เฉพาะ output
+> - <span class="string">"ใช้เทมเพลต: ..."</span> → โหลดเพื่ออ้างอิงโครงสร้าง
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔧 วิธีแก้สำหรับ Gemini CLI</h2>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>วิธีที่ 1: ใช้ gemini-cli-skillz Extension (แนะนำ)</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="code-block">
+<span class="comment"># ติดตั้งส่วนขยายที่รองรับ Agent Skills แบบเต็ม</span>
+gemini extensions install https://github.com/intellectronica/gemini-cli-skillz
+
+<span class="comment"># สร้าง symlink ไปยัง skills เดิมที่มีอยู่</span>
+ln -s ~/.claude/skills ~/.skillz
+
+<span class="comment"># รีสตาร์ท Gemini CLI</span>
+gemini
+                            </div>
+                            <p>ส่วนขยายนี้ใช้ <code>skillz</code> MCP server เพื่อรองรับ SKILL.md แบบเดียวกันกับ Claude Code</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>วิธีที่ 2: ใช้ MCP Servers</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="code-block">
+<span class="comment">// ~/.gemini/settings.json</span>
+{
+  <span class="string">"mcpServers"</span>: {
+    <span class="string">"skill-resources"</span>: {
+      <span class="string">"command"</span>: <span class="string">"npx"</span>,
+      <span class="string">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@modelcontextprotocol/server-filesystem"</span>],
+      <span class="string">"env"</span>: {
+        <span class="string">"ALLOWED_PATHS"</span>: <span class="string">"/path/to/skills/my-skill"</span>
+      }
+    }
+  }
+}
+                            </div>
+                            <p>MCP เป็นมาตรฐานแยกต่างหากที่ Gemini CLI รองรับเต็มรูปแบบ และสามารถทำงานร่วมกับ Skills ได้</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>วิธีที่ 3: เขียนคำชี้แจงให้ชัดเจนใน SKILL.md</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="code-block">
+<span class="comment">## 🛠️ วิธีใช้ทรัพยากร</span>
+- <span class="string">`scripts/scan-deep.sh`</span> → <strong>รันทันที</strong> ด้วย <span class="string">`bash scripts/scan-deep.sh`</span>
+  (ไม่ต้องอ่านโค้ดสคริปต์เข้าบริบท)
+- <span class="string">`references/security-checklist.md`</span> → <strong>อ่าน</strong> เมื่อต้องการเช็กลิสต์
+- <span class="string">`assets/report-template.md`</span> → <strong>ใช้เป็นเทมเพลต</strong> เมื่อสร้างรายงาน
+
+> 💡 เขียนคำอธิบาย <span class="string">"วิธีใช้"</span> ไฟล์ให้ชัดเจน เพราะบางแพลตฟอร์มไม่ตีความโฟลเดอร์อัตโนมัติ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📦 เครื่องมือและ Extension ที่แนะนำ</h2>
+                <div class="card-grid">
+                    <div class="card-item">
+                        <div class="icon">🔌</div>
+                        <h4>gemini-cli-skillz</h4>
+                        <p>Extension ที่เพิ่มความสามารถตีความโฟลเดอร์ตามมาตรฐาน Agent Skills</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge badge-primary">GitHub</span>
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="icon">🔗</div>
+                        <h4>MCP Servers</h4>
+                        <p>มาตรฐานสำหรับเชื่อมต่อเครื่องมือภายนอก ใช้งานร่วมกับ Skills ได้</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge badge-success">Official</span>
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="icon">📚</div>
+                        <h4>Context7</h4>
+                        <p>ระบบจัดการ skills และ context สำหรับการพัฒนา</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge badge-primary">npm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: เชิงลึก -->
+        <div id="tab5" class="tab-content">
+            <div class="card">
+                <h2>️ MCP + Skills Architecture</h2>
+                <p><strong>Model Context Protocol (MCP)</strong> และ <strong>Agent Skills</strong> กำลังรวมกันเป็นสถาปัตยกรรมหลัก:</p>
+                
+                <div class="card-grid" style="margin-top: 20px;">
+                    <div class="card-item">
+                        <div class="icon">📡</div>
+                        <h4>MCP</h4>
+                        <p>จัดการ "ข้อมูล" - ไฟล์, API, Database</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge badge-primary">Data Layer</span>
+                        </div>
+                    </div>
+                    <div class="card-item">
+                        <div class="icon">🧠</div>
+                        <h4>Skills</h4>
+                        <p>จัดการ "ตรรกะ" - เมื่อไหร่ควรใช้, อย่างไร</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge badge-success">Logic Layer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block" style="margin-top: 20px;">
+<span class="comment">// การทำงานร่วมกัน</span>
+<span class="number">1.</span> Skill ตัดสินใจว่าต้องการข้อมูลอะไร
+<span class="number">2.</span> เรียก MCP Server เพื่อดึงข้อมูลนั้น
+<span class="number">3.</span> MCP ส่งข้อมูลกลับให้ Skill
+<span class="number">4.</span> Skill ใช้ข้อมูลทำงานต่อ
+
+<span class="comment">// ตัวอย่าง: Skill ที่ใช้ MCP</span>
+{
+  <span class="string">"mcpServers"</span>: {
+    <span class="string">"github"</span>: {
+      <span class="string">"command"</span>: <span class="string">"npx"</span>,
+      <span class="string">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@modelcontextprotocol/server-github"</span>]
+    }
+  }
+}
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🔮 แนวโน้มอนาคต 2026</h2>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>📈 มาตรฐาน Agent Skills กำลังกลายเป็น De Facto Standard</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>มาตรฐาน <strong>Agent Skills</strong> (SKILL.md format) กำลังถูกยอมรับเป็นมาตรฐานกลางสำหรับ AI coding agents ทำให้สามารถเขียน Skills ครั้งเดียวและใช้งานได้หลายแพลตฟอร์ม</p>
+                            <ul style="margin-top: 15px; margin-left: 20px;">
+                                <li>Claude Code ใช้เป็นมาตรฐานหลัก</li>
+                                <li>GitHub Copilot รองรับแล้ว</li>
+                                <li>Cursor รองรับพร้อมฟีเจอร์เพิ่ม</li>
+                                <li>Gemini CLI กำลังพัฒนาให้รองรับเต็มรูปแบบ (PR #23090)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>🔄 Progressive Disclosure Level 3 กำลังถูกพัฒนา</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>ทีม <strong>Gemini CLI</strong> มี PR กำลังพัฒนาเพื่อเพิ่มการรองรับระดับ 3 แบบเต็ม (Semantic Folder Interpretation) ซึ่งจะทำให้:</p>
+                            <ul style="margin-top: 15px; margin-left: 20px;">
+                                <li>ตีความ <code>scripts/</code> = executable อัตโนมัติ</li>
+                                <li>ตีความ <code>references/</code> = docs อัตโนมัติ</li>
+                                <li>โหลดทรัพยากรแบบ Just-In-Time แบบสมบูรณ์</li>
+                                <li>รองรับ <code>allowed-tools</code> field สำหรับจำกัดสิทธิ์</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>🌐 Cross-Platform Skills将成为主流</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p>ในอนาคต การเขียน Skills ที่ใช้ข้ามแพลตฟอร์มได้จะเป็นทักษะสำคัญ:</p>
+                            <ul style="margin-top: 15px; margin-left: 20px;">
+                                <li>เขียน SKILL.md ตามมาตรฐานกลาง</li>
+                                <li>หลีกเลี่ยงฟีเจอร์ที่ยังไม่รองรับทุกที่</li>
+                                <li>ใช้ MCP สำหรับ integration ภายนอก</li>
+                                <li>ทดสอบบนหลายแพลตฟอร์มก่อนเผยแพร่</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>❓ FAQ & Troubleshooting</h2>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>Q: ทำไม Gemini CLI โหลดไฟล์ทั้งหมดแทนที่จะโหลดแค่ไฟล์ที่ต้องการ?</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>A:</strong> เพราะ Gemini CLI ยังไม่รองรับ Semantic Folder Interpretation (ระดับ 3 แบบเต็ม) วิธีแก้:</p>
+                            <ol style="margin-top: 10px; margin-left: 20px;">
+                                <li>เขียนคำชี้แจงให้ชัดเจนใน SKILL.md ว่าไฟล์ไหนควร "อ่าน" หรือ "รัน"</li>
+                                <li>ใช้ gemini-cli-skillz extension เพื่อเพิ่มความสามารถนี้</li>
+                                <li>ใช้ MCP servers สำหรับจัดการไฟล์แทน</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>Q: จะตรวจสอบว่า Skills โหลดสำเร็จหรือไม่?</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>A:</strong> ใช้คำสั่งเหล่านี้ใน Gemini CLI:</p>
+                            <div class="code-block" style="margin-top: 10px;">
+gemini mcp list      <span class="comment"># ดู MCP servers ที่เชื่อมต่อ</span>
+gemini skills list   <span class="comment"># ดู skills ที่โหลดอยู่</span>
+/mcp list            <span class="comment"># Slash command ในเซสชัน</span>
+/skills list         <span class="comment"># Slash command ในเซสชัน</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>Q: Token Cost ประหยัดได้จริงแค่ไหน?</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>A:</strong> จากกรณีศึกษาจริง:</p>
+                            <ul style="margin-top: 10px; margin-left: 20px;">
+                                <li><strong>แบบเดิม:</strong> 20,000 tokens ต่อเซสชัน</li>
+                                <li><strong>Progressive Disclosure:</strong> 2,000-3,000 tokens ต่อเซสชัน</li>
+                                <li><strong>ประหยัด:</strong> 85-90%</li>
+                            </ul>
+                            <p>ที่ราคา $0.0001/1K tokens = ประหยัด $0.0017-0.0018 ต่อเซสชัน</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>Q: มีโควต้าการใช้งานฟรีสำหรับ Gemini CLI ไหม?</span>
+                            <span class="accordion-icon">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <p><strong>A:</strong> มีครับ! โควต้าการใช้งานฟรี:</p>
+                            <ul style="margin-top: 10px; margin-left: 20px;">
+                                <li><strong>1,000 requests/วัน</strong> ด้วย Gemini 3 (ผสม Flash/Pro)</li>
+                                <li>ได้มาจาก aistudio.google.com</li>
+                                <li>สำหรับองค์กรใช้ Vertex AI แทน</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" onclick="scrollToTop()">↑</div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activate button
+            event.currentTarget.classList.add('active');
+        }
+
+        // Accordion
+        function toggleAccordion(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.classList.toggle('open');
+        }
+
+        // Token Calculator
+        function calculateTokens() {
+            const skillCount = parseInt(document.getElementById('skillCount').value);
+            const refCount = parseInt(document.getElementById('refCount').value);
+            const avgTokens = parseInt(document.getElementById('avgTokens').value);
+            const agent = document.getElementById('agentSelect').value;
+            
+            let totalTokens = 0;
+            
+            // Base metadata (Level 1)
+            totalTokens += skillCount * 100;
+            
+            // Instructions (Level 2) - assume 1 skill activated
+            totalTokens += 500;
+            
+            // Resources (Level 3) - varies by agent
+            switch(agent) {
+                case 'claude':
+                case 'copilot':
+                case 'cursor':
+                    totalTokens += refCount * avgTokens;
+                    break;
+                case 'gemini':
+                    // Worst case: might load all references
+                    totalTokens += refCount * avgTokens * 1.5;
+                    break;
+                case 'qwen':
+                    // RAG - only loads relevant portions
+                    totalTokens += refCount * avgTokens * 0.15;
+                    break;
+            }
+            
+            // Update display
+            document.getElementById('tokenResult').textContent = totalTokens.toLocaleString();
+            const cost = (totalTokens / 1000) * 0.0001;
+            document.getElementById('costResult').textContent = '$' + cost.toFixed(4);
+        }
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show/Hide Scroll Button
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // Initialize calculator on load
+        calculateTokens();
+    </script>
+</body>
+</html>
