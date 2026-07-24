@@ -19,6 +19,12 @@ via GitHub Copilot CLI. Two modules, four labs each:
 - **Every lab folder is self-contained.** Learners `cd` into a lab and start a
   fresh `copilot` session there. Never factor "shared" files out of a lab
   folder — duplication between labs is deliberate.
+- **Workspace rule:** labs whose lesson depends on the agent NOT having
+  context (baseline labs: 1.1, 1.2, 2.1) start their session in a `workspace/`
+  subfolder so the agent can't read the lab README or example files.
+  Demonstration labs (1.3, 1.4, 2.2+) start at the lab root because their
+  folder contents (specs, AGENTS.md, skills) ARE the experiment. Apply this
+  rule when adding labs.
 - `sample-project/` is the **canonical source** of the coupon spec, API doc,
   and test-case template. Labs 1.3 and 1.4 contain copies; if you change the
   canonical files, re-copy them into those labs.

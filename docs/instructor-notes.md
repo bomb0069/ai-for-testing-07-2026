@@ -38,6 +38,10 @@ and expect the room to take 2–3× the solo wall time per lab.
   everything, including folder names — this cuts both ways (Lab 1.3 vs. stray files).
 
 ### 1.2 Context + format
+- **Start in `workspace/`, same as 1.1.** Found in testing: if the session
+  starts next to `prompt-example.md`, the agent reads the file itself and
+  produces the grounded answer even from a lazy prompt — erasing the contrast
+  with Lab 1.1. The lab's point is that context enters through the prompt only.
 - Output hit every observable: exact `TC-COUPON-NNN` format, boundaries tested
   at 3,000/3,001 THB (cap) and 23:59:58 / 23:59:59 / 00:00:00 (expiry), exact
   error codes, R8 sent to Open questions instead of guessed.

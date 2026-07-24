@@ -1,6 +1,7 @@
 # Lab 1.2 · Context + Format
 
-**Time:** ~15 min · **Folder contents:** this README + `prompt-example.md`
+**Time:** ~15 min · **Folder contents:** this README + `prompt-example.md` +
+an intentionally empty `workspace/`
 
 ## Scenario
 
@@ -10,15 +11,19 @@ Both are pasted directly into the prompt — no files, no magic.
 
 ## Steps
 
-1. Start a fresh Copilot CLI session in this folder:
+1. Start a fresh Copilot CLI session **inside `workspace/`** — not next to this
+   README. `prompt-example.md` contains the whole spec; if the agent can see
+   that file it will simply read it and produce the "right" answer even with a
+   lazy prompt, and you'll never see the difference from Lab 1.1. In this lab,
+   context must enter through **your prompt only**:
 
    ```bash
-   cd labs/01-context-engineering/lab-1.2-context-and-format
+   cd labs/01-context-engineering/lab-1.2-context-and-format/workspace
    copilot
    ```
 
-2. Open [`prompt-example.md`](prompt-example.md), copy the whole prompt, and
-   paste it into Copilot.
+2. Open [`prompt-example.md`](../prompt-example.md) (one level up), copy the
+   whole prompt, and paste it into Copilot.
 
 3. Compare the output with your Lab 1.1 output, side by side.
 
